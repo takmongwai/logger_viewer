@@ -1,0 +1,13 @@
+<%=render 'dir_list'%>
+<hr/>
+
+显示: <%=@log_file%> @ <%= link_to @log_dir,view_logs_dir_url(logdir: @log_dir)%>
+<%= render 'form' %>
+
+<pre class="logline">
+<%@log_lines.each do |log_line| %>
+  <%=log_line%>
+<%end%>
+</pre>
+
+<%= render 'form' %>

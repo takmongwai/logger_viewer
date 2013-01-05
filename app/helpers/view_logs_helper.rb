@@ -1,0 +1,2 @@
+module ViewLogsHelper
+end
