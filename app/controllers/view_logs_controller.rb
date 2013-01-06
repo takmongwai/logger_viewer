@@ -1,26 +1,24 @@
 # encoding: UTF-8
 
 class ViewLogsController < ApplicationController
-  
+
+  around_filter :verifi_log_path
+
   #列出所有的日志目录
   def index
   end
-  
-  
+
+
   #显示特定目录下的所有日志
   def dir
-    @log_dir = File.expand_path(params[:logdir])
-    raise RuntimeError.new("非法操作") unless LOG_DIR.include?(@log_dir)
     @log_files = Dir.glob(File.join(@log_dir,"**"))
   end
-  
+
   #显示日志
   def log_file
     line = params[:line] || 20
     @grep = params[:grep]
     @line = line.to_i >= 200 ? 200 : line.to_i
-    @log_dir = params[:logdir]
-    @log_file = params[:logfile]
     @after = params[:after].to_i || 0
     @before = params[:before].to_i || 0
     if @grep.to_s.strip.size > 0
@@ -32,8 +30,34 @@ class ViewLogsController < ApplicationController
 
   # 下载日志文件
   def down_log
-    @log_file = params[:logfile]
     send_file @log_file
   end
+
+  private
   
+  def clean_path(s)
+    '' unless s
+    s.gsub!(/'|"/,'')
+    s.gsub!(/>+/,'')
+    s.gsub!(/<+/,'')
+    s.gsub!(/\|/,'')
+    File.expand_path(s)
+  end
+
+  def verifi_log_path
+    if _logdir = params[:logdir]
+      @log_dir = clean_path(_logdir)
+      Rails.logger.debug { "log_dir: #{@log_dir}" }
+      raise RuntimeError.new("非法操作") unless LOG_DIR.include?(@log_dir)
+    end
+
+    if params[:logfile]
+      @log_file = clean_path(params[:logfile])
+      Rails.logger.debug { "log_file: #{@log_file}" }
+      raise IOError.new("文件不存在") unless File.exists?(@log_file)
+      raise RuntimeError.new("非法操作") unless LOG_DIR.include?(File.dirname(@log_file))
+    end
+    yield
+  end
+
 end

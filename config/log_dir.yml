@@ -1,4 +1,4 @@
 #日志目录
 ---
-- /srv/rorapps/logger/log
-- /srv/rorapps/fgcc/log
+- /tmp
+- /var/log
