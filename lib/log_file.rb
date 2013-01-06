@@ -37,13 +37,12 @@ class LogFile
       after = opts.fetch(:after,0).to_i
       regx.gsub!(/'|"/,'')
       regx.gsub!(/\s/,'\s')
-      regx.gsub!(/\[/,'\[')
-      regx.gsub!(/\]/,'\]')
-      cmd << %Q~egrep -A #{after} -B #{before} -n -i -E '#{regx}' | ~
+      cmd << %Q~egrep -s -A #{after} -B #{before} -n -i -E '#{regx}' | ~
       cmd << %Q~tail -n #{opts.fetch(:linenum,20)}~
       return yield run_cmd(cmd.join).split(/\n/) if block_given?
       run_cmd(cmd.join).split(/\n/)
     end
+
     
     #压缩文件处理
     #
