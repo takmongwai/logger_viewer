@@ -5,3 +5,10 @@
 
 ####配置
 修改 config/log_dir.yml 添加允许查看的日志目录.
+
+
+#####支持文件
+plain
+*.bz2
+*.gz
+*.tar.gz
