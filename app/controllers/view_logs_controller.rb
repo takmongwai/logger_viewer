@@ -29,5 +29,11 @@ class ViewLogsController < ApplicationController
       @log_lines = LogFile.tail(@log_file,linenum:@line)
     end
   end
+
+  # 下载日志文件
+  def down_log
+    @log_file = params[:logfile]
+    send_file @log_file
+  end
   
 end

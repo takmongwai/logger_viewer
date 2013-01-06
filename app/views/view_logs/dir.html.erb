@@ -1,5 +1,7 @@
 <%=render 'dir_list'%>
 <hr/>
 <%@log_files.each do |log_file|%>
-<%= link_to log_file,view_logs_log_file_url(:logfile => log_file,:logdir => @log_dir)%><br/>
+	<%= link_to log_file,view_logs_log_file_url(:logfile => log_file,:logdir => @log_dir)%> 
+	<%= link_to 'down',view_logs_down_log_url(:logfile => log_file,:logdir => @log_dir)%> 
+	<br/>
 <%end%>
