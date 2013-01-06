@@ -11,7 +11,9 @@ class ViewLogsController < ApplicationController
 
   #显示特定目录下的所有日志
   def dir
-    @log_files = Dir.glob(File.join(@log_dir,"**"))
+    @log_files = Dir.glob(File.join(@log_dir,"**")).map{|path| path if File.file?(path)}.delete_if{|v| v==nil}
+    Rails.logger.debug { "*"*80  }
+    Rails.logger.debug { @log_files }
   end
 
   #显示日志
