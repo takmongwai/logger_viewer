@@ -5,7 +5,9 @@ LoggerViewer::Application.routes.draw do
   match 'view_logs' => 'view_logs#index'
   match 'view_logs/dir' => 'view_logs#dir'
   match 'view_logs/log_file' => 'view_logs#log_file'
+  match 'view_logs/down_log' => 'view_logs#down_log'
   
+  root :to => 'view_logs#index'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
